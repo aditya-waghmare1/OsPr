@@ -1,0 +1,32 @@
+#include<stdio.h>
+#include<stdlib.h>
+int main()
+{
+int RQ[100],i,n,TotalHeadMoment=0,intial;
+printf("Enter the number of requests\n");
+scanf("%d",&n);
+printf("Enter request in sequence \n");
+for(i=0;i<n;i++)
+scanf("%d",&RQ[i]);
+printf("Enter intial head position  \n");
+scanf("%d",&intial);
+printf("The order request sequence is %d",intial);
+ 
+//logic for FCFS disk scheduling 
+for(i=0;i<n;i++)
+{
+  TotalHeadMoment=TotalHeadMoment+abs(RQ[i]-intial);
+  intial=RQ[i];
+ 
+ 
+}
+for(i=0;i<n;i++)
+{
+printf("->%d",RQ[i]);
+}
+ 
+ 
+printf("\nTotalHeadMoment is %d head movment",TotalHeadMoment);
+ 
+return 0;
+}

@@ -1,0 +1,64 @@
+#include<sys/ipc.h>
+
+#include<sys/shm.h>
+
+#include<stdio.h>
+#include<unistd.h>
+int main()
+
+{
+
+//ftok to generate key
+
+key_t key=ftok("shmfile",65); 
+//shmget return an identifier in shmid 
+int shmid=shmget(key, 1024,0666 | IPC_CREAT); 
+printf("\n Shared Memory Id=%d\n",shmid); 
+//shmat to attach a Shared Memory 
+char *str=(char*)shmat(shmid,(void*)0,0); 
+printf("\n Memory Segment attached to client's process");
+printf("/nWrite Data :");
+scanf("%[^\n]%*c",str); 
+printf("Data Written in Memory :%s\n",str);
+sleep(25);
+
+//detach from Shared Memory
+
+shmdt(str);
+
+printf("\n Memory Segment %d Detached\n",shmid);
+
+return 0;
+}
+//////////////////////////////////////////////////
+b.
+#include<sys/ipc.h> 
+#include<sys/shm.h> 
+#include<stdio.h> 
+#include<unistd.h>
+int main()
+{
+//tok to generate key
+
+key_t key=ftok("shmfile",65); 
+//shmget return an identifier in shmid
+
+int shmid=shmget(key,1024,0666|IPC_CREAT);
+
+printf("\n Shared Memory Id=%d\n",shmid); 
+//shmat to attach a Shared Memory
+
+char *str=(char*)shmat(shmid,(void*)0,0); 
+printf("Data read from Memory :%s\n",str);
+
+//detach from Shared Memory
+
+shmdt(str);
+
+//destroy The Shared Memory
+
+shmctl(shmid,IPC_RMID,NULL); 
+printf("\n Memory Segment %d Detached\n",shmid);
+
+return 0;
+}
